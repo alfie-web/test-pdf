@@ -1,0 +1,27 @@
+.pdf {
+	background-color: #ccc;
+	width: 600px;
+	height: 600px;
+	display: flex;
+	/* font: 18px 'Caveat v2'; */
+}
+
+.pdf img {
+	height: auto;
+	/* width: 200px; */
+}
+
+.text {
+	color: red;
+	/* font: 18px 'Caveat v2'; */
+}
+/* 
+button {
+	font: 18px 'Lena';
+} */
+
+.test-text {
+	width: 499px;
+	font: 18px 'Caveat v2';
+	color: red;
+}
