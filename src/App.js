@@ -75,7 +75,7 @@ function _getBorderPath(dir, x, y, r, size, firstArcWidth, firstArcHeight, secon
 	 dir + size +
 	 `a${elipseAxis} 0 0 1 ${secondArcWidth},${secondArcHeight}`;
  }
- 
+
 const loadImage = async (url) => new Promise((resolve) => {
 	const image = new Image()
 	image.onload = () => {
@@ -94,7 +94,7 @@ const loadFont = async (url) => new Promise(async (resolve) => {
 	reader.readAsDataURL(fontResponseBlob);
 
 	reader.onloadend = async () => {
-		const base64data = reader.result;           
+		const base64data = reader.result;
 		const binaryString = base64data.substr(base64data.indexOf('base64,') + 7);
 
 		resolve({ font: binaryString });
@@ -103,25 +103,25 @@ const loadFont = async (url) => new Promise(async (resolve) => {
 
 function calcSvgObjectSize(width, height, maxSize) {
 	const result = { width, height };
- 
+
 	if (width > height) {
 	  const diffPercent = ((width - height) / width) * 100;
- 
+
 	  result.width = maxSize;
 	  result.height = Math.ceil(maxSize - ((maxSize * diffPercent) / 100));
 	} else if (width < height) {
 	  const diffPercent = ((height - width) / height) * 100;
- 
+
 	  result.width = Math.ceil(maxSize - ((maxSize * diffPercent) / 100));
 	  result.height = maxSize;
 	} else {
 	  result.width = maxSize;
 	  result.height = maxSize;
 	}
- 
+
 	return result;
  }
- 
+
 function createCanvasImage(url, width, height) {
 	const cropCanvas = document.createElement('canvas');
 	const cropCtx = cropCanvas.getContext('2d');
@@ -173,7 +173,7 @@ const objects = [
 		y: 276,
 		svg: '<svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48px" height="48px"><path d="M 5 1 C 3.9 1 3 1.9 3 3 L 3 17 L 5 17 L 5 3 L 17 3 L 17 1 L 5 1 z M 9 5 C 7.9 5 7 5.9 7 7 L 7 21 C 7 22.1 7.9 23 9 23 L 20 23 C 21.1 23 22 22.1 22 21 L 22 7 C 22 5.895 21.105 5 20 5 L 9 5 z M 14.5 9.4570312 L 18 11.013672 L 18 12.869141 C 18 15.914141 15.496 17.336109 14.5 17.537109 C 13.504 17.337109 11 15.914141 11 12.869141 L 11 11.013672 L 14.5 9.4570312 z"/></svg>'
 	},
-	{ 
+	{
 		id: 'dsds',
 		type: 'rect',
 		x: 315,
@@ -374,15 +374,15 @@ const App = () => {
 							const y3 = isRadiusZero ? obj.height - borderWidth : obj.height - delta;
 							const x4 = isRadiusZero ? borderWidth : delta;
 							const y4 = isRadiusZero ? obj.height : obj.height - delta;
-	
+
 							const borderTop = _getBorderPath('h', x1, y1, borderRadius, h, arcDx, -arcDy, arcDx, arcDy);
 							const borderRight = _getBorderPath('v', x2, y2, borderRadius, v, arcDy, arcDx, -arcDy, arcDx);
 							const borderBottom = _getBorderPath('h', x3, y3, borderRadius, -h, -arcDx, arcDy, -arcDx, -arcDy);
 							const borderLeft = _getBorderPath('v', x4, y4, borderRadius, -v, -arcDy, -arcDx, arcDy, -arcDx);
-	
+
 							let dasharray = null;
 							let dashoffset = null;
-	
+
               // TODO: Вставил для теста, тут нужно динамически формировать
 							if (obj.style.border_style === 'dashed') {
 								dasharray = '10, 5'; // obj.style.border_all * 2, obj.style.border_all
@@ -390,9 +390,9 @@ const App = () => {
 								dasharray = '0, 10'; // 0, obj.style.border_all * 2
 								dashoffset = '2.5'; // obj.style.border_all / 2
 							}
-	
+
 							const borders = `<path d="${obj.style.border_top && borderTop}${obj.style.border_right && borderRight}${obj.style.border_bottom && borderBottom}${obj.style.border_left && borderLeft}" stroke="${obj.style.border_color}" stroke-width="${obj.style.border_all}" ${dasharray && `stroke-dasharray="${dasharray}"`} ${dashoffset && `stroke-linecap="round" stroke-dashoffset="${dashoffset}"`} fill-opacity="0" />`
-	
+
 							svg.insertAdjacentHTML('beforeend', borders);
 						}
 
@@ -405,9 +405,9 @@ const App = () => {
 					}
 					else if (obj.type === 'text') {
 						ctx.font = `${obj.style.font_size}px ${obj.style.font_family}`;
-						
+
 						let wrappedText = wrapText(ctx, obj.text, obj.x, obj.y + obj.style.font_size, obj.width, obj.style.line_height * obj.style.font_size, obj.style.text_align);
-            
+
 						wrappedText.forEach(async (item) => {
               // TODO: подумать как быть с extra_color
 
@@ -425,7 +425,7 @@ const App = () => {
 							// item[0] is the text
 							// item[1] is the x coordinate to fill the text at
 							// item[2] is the y coordinate to fill the text at
-							ctx.fillText(item[0], item[1], item[2]); 
+							ctx.fillText(item[0], item[1], item[2]);
 					  })
 
             // Как вариант можно преобразовать текст в path, тогда не нужно будет грузить шрифты
@@ -484,7 +484,7 @@ const App = () => {
 
 						const svgUrl = `data:image/svg+xml;base64,${window.btoa(obj.svg)}`
 						console.log('svgUrl', svgUrl)
-						
+
 						const data = await loadImage(svgUrl)
 
 						ctx.drawImage(data, obj.x, obj.y, svgSize.width, svgSize.height);
@@ -515,10 +515,10 @@ const App = () => {
 					// filters: ["ASCIIHexEncode"]
 				})
 
-        
+
 				// TODO: тут нужно перебирать все объекты, находить тексты, и формировать массив уникальных шрифтов (как-то с учётом начертания)
 				// затем в цикле их загружать
-        
+
 				// add the font to jsPDF
 				const { font } = await loadFont('https://gc-fonts.supafiles.com/v2/families/Caveat/Caveat-Regular.ttf');
 
@@ -549,7 +549,7 @@ const App = () => {
 
 			// });
 		} catch (error) {
-			
+
 		}
 	}
 
